@@ -126,14 +126,16 @@ static void SetupVulkan(const char** extensions, uint32_t extensions_count)
         // most common cases (multi-gpu/integrated+dedicated graphics). Handling more complicated setups (multiple
         // dedicated GPUs) is out of scope of this sample.
         int use_gpu = 0;
+        int notFound = true;
         for (int i = 0; i < (int)gpu_count; i++)
         {
             VkPhysicalDeviceProperties properties;
             vkGetPhysicalDeviceProperties(gpus[i], &properties);
-            if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+            printf("GPU %d: %s\n", i, properties.deviceName);
+            if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && notFound)
             {
+                notFound = false;
                 use_gpu = i;
-                break;
             }
         }
 
